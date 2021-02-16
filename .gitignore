@@ -1,0 +1,16 @@
+# node modules
+node_modules
+
+
+# build files
+build
+
+# yarn lock or package-lock.json
+yarn.lock
+package-lock.json
+
+# tokens
+tokens
+
+# env
+.env
