@@ -3,9 +3,13 @@ import { getRepository } from "typeorm";
 import Dialog from "./models/Dialog";
 import { MESSAGE_WELLCOME } from "./messages/wellcome";
 
-create("auto-atendente").then( client => {
+// @type
+import IDialog from "./@types/IDialog";
+
+create("auto-atendente").then( client => {   
     let time: NodeJS.Timeout;
     client.onStreamChange( (state) => {
+        console.log("- Estado de conexão:", state)
         clearTimeout(time);
         if ( state === "CONNECTED" ) {
             console.log("🟢 Bot carregado com sucesso!");
@@ -22,28 +26,25 @@ create("auto-atendente").then( client => {
     console.error(error)
 });
 
-interface IDialog {
-    execute(client: Whatsapp, message: Message): Function
-}
-
 async function start(client: Whatsapp) {
-    
     const inchat = await client.isInsideChat();
     if ( inchat ) {
-        client.onMessage( async ( message: Message ) => {
+        client.onMessage( async ( message ) => {
             try {
                 const repo = getRepository(Dialog);
                 const d = await repo.findOne({ number: message.from });
+                
                 if ( d ) {
-                    const instance = await import(`./Dialogs/${d?.name}`)
+                    const instance = await import(`./dialogs/${d?.name}`)
                     const m:IDialog = new instance.default();
                     m.execute(client, message);
                 } else {
-                    const dialog = new Dialog()
-                    dialog.name = "wellcome"
-                    dialog.stage = 0,
-                    dialog.number = message.from
-                    repo.create(dialog)
+                    const dialog = repo.create({
+                        number: message.from,
+                        stage: 0,
+                        name: "wellcome"
+                    })
+                    await repo.save(dialog);
                     await client.sendText(message.from, MESSAGE_WELLCOME({ username: message.sender.pushname }));
                 }
             } catch (error) {

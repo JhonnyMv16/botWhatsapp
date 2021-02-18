@@ -15,7 +15,8 @@ export class createTableDialog1613505180803 implements MigrationInterface {
                 {
                     name: "name",
                     type: "varchar",
-                    length: "64"
+                    length: "64",
+                    default: null
                 },
                 {
                     name: "number",
@@ -24,12 +25,14 @@ export class createTableDialog1613505180803 implements MigrationInterface {
                 {
                     name: "stage",
                     type: "int",
-                    length: "2"
+                    length: "2",
+                    default: 0
                 },
                 {
                     name: "client_cpf",
                     type: "varchar",
-                    length: "20"
+                    length: "20",
+                    default: null
                 },
                 {
                     name: "created_at",
