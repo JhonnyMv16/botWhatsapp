@@ -9,6 +9,9 @@ build
 yarn.lock
 package-lock.json
 
+# logs
+*.log
+
 # tokens
 tokens
 
