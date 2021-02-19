@@ -3,6 +3,7 @@ import { getRepository } from "typeorm";
 import Dialog from "../models/Dialog";
 
 import IDialog from "../@types/IDialog";
+import { MESSAGE_SUPPORT_LIST } from "../messages/support.message";
 
 export default class MenuClientes implements IDialog
 {
@@ -17,7 +18,7 @@ export default class MenuClientes implements IDialog
                 dialog.name = "menuClientes/1.ts";
                 await repo.save(dialog);
 
-                client.sendText(message.from, "Ainda em desenvolvimento.");
+                client.sendText(message.from, MESSAGE_SUPPORT_LIST());
                 break;
 
             // Informar Pagamento

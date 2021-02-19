@@ -1,4 +1,5 @@
 export default interface IClienteResponse {
+    id: string,
     razao: string,
     cnpj_cpf: string,
     endereco: string,

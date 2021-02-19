@@ -18,6 +18,9 @@ export default class Dialog
     @Column({ default: null })
     cliente_cpf: string;
 
+    @Column({  default: 0 })
+    awating: boolean;
+
     @CreateDateColumn()
     created_at: Date;
 

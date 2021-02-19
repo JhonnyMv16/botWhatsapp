@@ -35,6 +35,11 @@ export class createTableDialog1613505180803 implements MigrationInterface {
                     default: null
                 },
                 {
+                    name: "awaiting",
+                    type: "boolean",
+                    default: 0
+                },
+                {
                     name: "created_at",
                     type: "datetime",
                     default: "CURRENT_TIMESTAMP()"

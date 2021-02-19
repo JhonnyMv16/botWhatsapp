@@ -1,7 +1,7 @@
 import { create, Whatsapp, Message } from "venom-bot";
 import { getRepository } from "typeorm";
 import Dialog from "./models/Dialog";
-import { MESSAGE_WELLCOME } from "./messages/wellcome";
+import { MESSAGE_WELLCOME } from "./messages/wellcome.message";
 
 // @type
 import IDialog from "./@types/IDialog";
@@ -35,6 +35,13 @@ async function start(client: Whatsapp) {
                 const d = await repo.findOne({ number: message.from });
                 
                 if ( d ) {
+                    
+                    if ( message.body.startsWith("finalizar") ) {
+                        await repo.delete({ number: message.from });
+                        await client.sendText(message.from, "Agradecemos o contato!");
+                        return
+                    }
+
                     const instance = await import(`./dialogs/${d?.name}`)
                     const m:IDialog = new instance.default();
                     m.execute(client, message);

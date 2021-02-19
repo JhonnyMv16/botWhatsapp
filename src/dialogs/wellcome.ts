@@ -2,7 +2,7 @@ import { Whatsapp, Message } from "venom-bot";
 import { getRepository } from "typeorm";
 import ixc from "../service/ixc_functions";
 import Dialog from "../models/Dialog";
-import { MESSAGE_MENU_CLIENT } from "../messages/menuCliente";
+import { MESSAGE_MENU_CLIENT } from "../messages/menuClient.message";
 
 export default class Wellcome
 {
