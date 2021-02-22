@@ -3,8 +3,7 @@ Selecione a opção desejada
 
 [1] - Sem Conexão
 [2] - Lentidão
-[3] - Oscilação
-[4] - Configuração de Roteador
-[*] - Voltar menu anterior
-[#] - Finalizar atendimento
+[3] - Aumento de Cabo 
+[4] - Troca de Senha
+[5] - Voltar
 `

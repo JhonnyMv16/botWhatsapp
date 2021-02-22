@@ -16,10 +16,10 @@ export default class Dialog
     stage: number;
 
     @Column({ default: null })
-    cliente_cpf: string;
+    client_cpf: string;
 
     @Column({  default: 0 })
-    awating: boolean;
+    awaiting: boolean;
 
     @CreateDateColumn()
     created_at: Date;

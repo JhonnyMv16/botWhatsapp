@@ -16,7 +16,7 @@ export class createTableDialog1613505180803 implements MigrationInterface {
                     name: "name",
                     type: "varchar",
                     length: "64",
-                    default: null
+                    isNullable: true
                 },
                 {
                     name: "number",
@@ -32,7 +32,7 @@ export class createTableDialog1613505180803 implements MigrationInterface {
                     name: "client_cpf",
                     type: "varchar",
                     length: "20",
-                    default: null
+                    isNullable: true
                 },
                 {
                     name: "awaiting",

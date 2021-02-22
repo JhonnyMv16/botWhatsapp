@@ -15,16 +15,16 @@ export default class Wellcome
         const cliente = await ixc.getClient(message.body);
         // cliente encontrado
         if ( cliente ) {
-            const repo = getRepository(Dialog);
-            
-            // atualizar banco de dados
-            const dialog = await repo.findOneOrFail({ number:message.from })
-            dialog.cliente_cpf = cliente.cnpj_cpf;
-            dialog.name = "menuClientes"
-            await repo.save(dialog);
 
-            client.sendText(message.from, `Achei o seu endereço!\n\n${cliente.endereco}, ${cliente.numero} - ${cliente.bairro}, ${cliente.cidade}`);
-            client.sendText(message.from, MESSAGE_MENU_CLIENT({ cpf: cliente.cnpj_cpf }) );
+            // atualizar banco de dados
+            const repo = getRepository(Dialog);
+            await repo.update({ number: message.from }, {
+                name: "menuClientes",
+                client_cpf: cliente.cnpj_cpf
+            });
+
+            await client.sendText(message.from, `Achei o seu endereço!\n\n${cliente.endereco}, ${cliente.numero} - ${cliente.bairro}, ${cliente.cidade}`);
+            await client.sendText(message.from, MESSAGE_MENU_CLIENT({ cpf: cliente.cnpj_cpf }) );
         }
     }
 }

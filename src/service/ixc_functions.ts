@@ -1,9 +1,8 @@
 import request from "request"
-import IClientLogin from "../@types/IClienteLogin";
-
 
 // @types
 import IClienteResponse from "../@types/IClienteResponse";
+import IClientLogin from "../@types/IClienteLogin"
 
 class IXC {
     private baseurl;
@@ -14,13 +13,12 @@ class IXC {
         this.ixc_token = ixc_token;
     }
 
-    private ValidateCPF(cpf:string) {
+    private ValidateCPF(cpf:string) : string{
         cpf = cpf.replace(/[^\d]/g, "");
-        if ( cpf.length != 11 )return
         return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
     }
 
-    public async getClient(cpf:any, filial:number = 2):Promise<IClienteResponse> {
+    public async getClient(cpf:string, filial:number = 2):Promise<IClienteResponse> {
         return new Promise((resolve, reject) => {
             cpf = this.ValidateCPF(cpf);
             request(`${this.baseurl}/cliente`, {
@@ -58,7 +56,6 @@ class IXC {
 
     public async getClientLogin(client_id:string):Promise<IClientLogin> {
         return new Promise((resolve, reject) => {
-            
             request(`${this.baseurl}/radusuarios`, {
                 method: "GET",
                 headers: {
@@ -83,6 +80,29 @@ class IXC {
                     const data:IClientLogin = body.registros[0];
                     resolve(data);
                 }
+            })
+        })
+    }
+
+    public async disconnectLogin(login_id:string):Promise<any> {
+        return new Promise((resolve: any, reject) => {
+            
+            request(`${this.baseurl}/desconectar_clientes`, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Basic ' + Buffer.from(this.ixc_token).toString('base64'),
+                },
+                body: {
+                    id: login_id
+                },
+                json: true                
+            }, function ( error, response, body ) {                
+                if (error) return reject(error);
+                if ( response.statusCode === 500 ) {
+                    return resolve({ message: "Não foi possível desconectar o cliente!", code: response.statusCode })
+                }
+                resolve(body.registros[0]);
             })
         })
     }
