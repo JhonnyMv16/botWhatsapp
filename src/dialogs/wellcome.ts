@@ -19,7 +19,7 @@ export default class Wellcome
             // atualizar banco de dados
             const repo = getRepository(Dialog);
             await repo.update({ number: message.from }, {
-                name: "menuClientes",
+                name: "menuClient",
                 client_cpf: cliente.cnpj_cpf
             });
 

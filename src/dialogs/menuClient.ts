@@ -5,24 +5,24 @@ import Dialog from "../models/Dialog";
 import IDialog from "../@types/IDialog";
 import { MESSAGE_SUPPORT_LIST } from "../messages/support.message";
 
-export default class MenuClientes implements IDialog
+export default class MenuClient implements IDialog
 {
     async execute(client:Whatsapp, message:Message) {
-        const repo = getRepository(Dialog);
+        const dialogRepository = getRepository(Dialog);
+        const dialog = await dialogRepository.findOneOrFail({ number: message.from });
 
         const option = parseInt(message.body);
         switch(option) {
             // Suporte Técnico
             case 1:
-                const dialog = await repo.findOneOrFail({ number: message.from });
-                dialog.name = "menuClientes/1.ts";
-                await repo.save(dialog);
-
+                await dialogRepository.update(dialog.id, { name: "menu/support.ts" });
                 client.sendText(message.from, MESSAGE_SUPPORT_LIST());
                 break;
 
             // Informar Pagamento
             case 2:
+                client.sendText(message.from, "Envie-nos uma foto do comprovante.");
+                break;
 
             // Planos e Valores
             case 3:

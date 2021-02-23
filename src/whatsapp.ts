@@ -38,13 +38,18 @@ async function start(client: Whatsapp) {
     if ( inchat ) {
         client.onMessage( async ( message: Message ) => {
             try {
-
                 const queueRepository = getRepository(Queue);
                 const queue = await queueRepository.findOne({
                     number: Not(Equal("message")),
                     status: Not(Equal("close"))
                 });
                 if ( queue ) {
+
+                    if ( message.body.startsWith("finalizar") ) {
+                        await queueRepository.delete({ id: queue.id });
+                        await client.sendText(message.from, MESSAGE_FINALY_SUPPORT());
+                        return
+                    }
 
                     if ( queue.status === "open" ) {
                         await client.sendText(message.from, "Aguarde que em breve um *colaborador* ira atende-lo!");
@@ -56,7 +61,7 @@ async function start(client: Whatsapp) {
 
                 const dialogRepository = getRepository(Dialog);
                 const dialog = await dialogRepository.findOne({ number: message.from });
-                
+
                 if ( dialog ) {
                     if ( message.body.startsWith("finalizar") ) {
                         await dialogRepository.delete({ id: dialog.id });

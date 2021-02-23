@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn  } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BeforeInsert, getRepository  } from "typeorm"
+import Dialog from "./Dialog";
 
 @Entity()
 export default class Queue
@@ -11,6 +12,9 @@ export default class Queue
 
     @Column({ default: null })
     avatar_url: string
+
+    @Column()
+    client_cpf: string;
 
     @Column()
     client_id: string;
@@ -35,4 +39,10 @@ export default class Queue
 
     @UpdateDateColumn()
     updated_at: Date;
+
+    @BeforeInsert()
+    removeDialog = async () => {
+        const dialogRepository = getRepository(Dialog);
+        await dialogRepository.delete({ client_cpf: this.client_cpf })
+    }
 }

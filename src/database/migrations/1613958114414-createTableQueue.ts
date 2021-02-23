@@ -19,11 +19,16 @@ export class createTableQueue1613958114414 implements MigrationInterface {
             },{
                 name: "avatar_url",
                 type: "varchar",
+                length: "2048",
                 isNullable: true
             },{
                 name: "client_id",
                 type: "varchar"
             },{
+                name: "client_cpf",
+                type: "varchar"
+            },{
+                
                 name: "status",
                 type: "enum",
                 enum: ["open", "close", "progress"],
